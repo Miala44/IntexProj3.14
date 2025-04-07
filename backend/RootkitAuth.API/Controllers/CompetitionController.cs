@@ -1,3 +1,60 @@
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.Net.Http.Headers;
+//using RootkitAuth.API.Data;
+//using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
+
+//namespace RootkitAuth.API.Controllers
+//{
+//    [Route("[controller]")]
+//    [ApiController]
+//    [Authorize]
+//    public class CompetitionController : ControllerBase
+//    {
+//        private CompetitionDbContext _competitionDbContext;
+//        public CompetitionController(CompetitionDbContext temp)
+//        {
+//            _competitionDbContext = temp;
+//        }
+//        [HttpGet("GetRootbeers")]
+//        public IActionResult GetRootbeers(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? containers = null)
+//        {
+//            var query = _competitionDbContext.Rootbeers.AsQueryable();
+
+//            if (containers != null && containers.Any())
+//            {
+//                query = query.Where(c => containers.Contains(c.Container));
+//            }
+
+//            var totalNumBrews = query.Count();
+//            var brews = query
+//                .Skip((pageNum - 1) * pageSize)
+//                .Take(pageSize)
+//                .ToList();
+
+//            var returnBrews = new
+//            {
+//                Brews = brews,
+//                TotalNumProjects = totalNumBrews
+//            };
+
+//            return Ok(returnBrews);
+//        }
+
+//        [HttpGet("GetContainerTypes")]
+//        public IActionResult GetContainerTypes()
+//        {
+//            var containerTypes = _competitionDbContext.Rootbeers
+//                .Select(c => c.Container)
+//                .Distinct()
+//                .ToList();
+
+//            return Ok(containerTypes);
+//        }
+//    }
+//}
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,47 +67,49 @@ namespace RootkitAuth.API.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize]
-    public class CompetitionController : ControllerBase
+    public class MoviesController : ControllerBase
     {
-        private CompetitionDbContext _competitionDbContext;
-        public CompetitionController(CompetitionDbContext temp)
+        private MovieDbContext _movieDbContext;
+
+        // Constructor that injects the MovieDbContext
+        public MoviesController(MovieDbContext movieDbContext)
         {
-            _competitionDbContext = temp;
+            _movieDbContext = movieDbContext;
         }
-        [HttpGet("GetRootbeers")]
-        public IActionResult GetRootbeers(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? containers = null)
+
+        // Get all movie details (title and director)
+        [HttpGet("GetAllMovies")]
+        public IActionResult GetAllMovies(int pageSize = 10, int pageNum = 1)
         {
-            var query = _competitionDbContext.Rootbeers.AsQueryable();
+            var query = _movieDbContext.MoviesTitles.AsQueryable();
 
-            if (containers != null && containers.Any())
-            {
-                query = query.Where(c => containers.Contains(c.Container));
-            }
-
-            var totalNumBrews = query.Count();
-            var brews = query
+            // Pagination logic (optional)
+            var totalMovies = query.Count();
+            var movies = query
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            var returnBrews = new
+            var result = new
             {
-                Brews = brews,
-                TotalNumProjects = totalNumBrews
+                Movies = movies,
+                TotalMovies = totalMovies
             };
-            
-            return Ok(returnBrews);
+
+            return Ok(result);
         }
 
-        [HttpGet("GetContainerTypes")]
-        public IActionResult GetContainerTypes()
+        [HttpGet("GetMovieById/{id}")]
+        public IActionResult GetMovieById(string id)
         {
-            var containerTypes = _competitionDbContext.Rootbeers
-                .Select(c => c.Container)
-                .Distinct()
-                .ToList();
-            
-            return Ok(containerTypes);
+            var movie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == id);
+
+            if (movie == null)
+            {
+                return NotFound(new { Message = "Movie not found" });
+            }
+
+            return Ok(movie);
         }
     }
 }

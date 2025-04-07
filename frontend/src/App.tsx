@@ -1,11 +1,10 @@
 import './App.css';
-import CompetitionPage from './pages/CompetitionPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ProductPage from './pages/ProductPage';
-import CartPage from './pages/CartPage';
 import { CartProvider } from './context/CartContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import MoviesPage from './pages/MoviePage';
+import DetailPage from './pages/DetailPage';
 
 function App() {
   return (
@@ -13,13 +12,9 @@ function App() {
       <CartProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<CompetitionPage />} />
-            <Route path="/competition" element={<CompetitionPage />} />
-            <Route
-              path="/product/:rootbeerName/:rootbeerId/:currentRetailPrice"
-              element={<ProductPage />}
-            />
-            <Route path="/cart" element={<CartPage />} />
+            <Route path="/" element={<MoviesPage />} />
+            <Route path="/movie" element={<MoviesPage />} />
+            <Route path="/detailPage/:id" element={<DetailPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>
