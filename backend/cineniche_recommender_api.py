@@ -25,6 +25,28 @@ predicted_ratings_df = pd.DataFrame(predicted_ratings, index=user_item_matrix.in
 # Build movie lookup
 movie_lookup = titles_df[['show_id', 'title']].drop_duplicates().set_index('show_id')['title'].to_dict()
 
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Build reverse lookup from title to show_id
+reverse_lookup = {v: k for k, v in movie_lookup.items()}
+
+def recommend_similar_movies(show_id, top_n=5):
+    if show_id not in user_item_matrix.columns:
+        return []
+
+    # Get movie vector and compute cosine similarity with all others
+    movie_idx = list(user_item_matrix.columns).index(show_id)
+    movie_vector = Vt.T[movie_idx].reshape(1, -1)
+    similarity_scores = cosine_similarity(movie_vector, Vt.T)[0]
+
+    # Get top N most similar movies (excluding itself)
+    similar_indices = np.argsort(similarity_scores)[::-1]
+    similar_indices = [i for i in similar_indices if i != movie_idx][:top_n]
+    similar_show_ids = [list(user_item_matrix.columns)[i] for i in similar_indices]
+
+    return [movie_lookup.get(sid, f"Unknown ({sid})") for sid in similar_show_ids]
+
+
 # Recommendation logic
 def recommend_movies_for_user(user_id, top_n=5):
     if user_id not in predicted_ratings_df.index:
@@ -55,6 +77,16 @@ def top_rated():
 
     titles = [movie_lookup.get(show_id, f"Unknown ({show_id})") for show_id in top_shows]
     return jsonify({"recommendations": titles})
+
+@app.route("/api/recommend/movie/<title>")
+def recommend_movie(title):
+    show_id = reverse_lookup.get(title)
+    if show_id is None:
+        return jsonify({"error": f"Movie '{title}' not found"}), 404
+
+    similar_titles = recommend_similar_movies(show_id)
+    return jsonify({"title": title, "recommendations": similar_titles})
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
