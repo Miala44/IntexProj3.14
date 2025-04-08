@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RootkitAuth.API.Data;
+using RootkitAuth.API.Data.NewDbModels;
 using RootkitAuth.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 
 builder.Services.AddDbContext<CompetitionDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("CompetitionConnection")));
