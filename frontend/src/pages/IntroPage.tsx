@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Make sure to import Bootstrap for responsive design
 import MoviesList from '../components/MovieList'; // Import MoviesList component
+import TopRatedCarousel from '../components/TopRatedCarousel';
 
 const IntroPage: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const IntroPage: React.FC = () => {
         <section className="my-5">
           <h2 className="mb-4">Featured Movies</h2>
           <MoviesList /> {/* Add MoviesList component here */}
+          <TopRatedCarousel />
         </section>
 
         {/* Footer Section */}
