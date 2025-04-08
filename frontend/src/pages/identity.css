@@ -1,12 +1,50 @@
 body {
-  background: #007bff;
-  background: linear-gradient(to right, #0062e6, #33aeff);
+  background: linear-gradient(to right, #0046a3, #33aeff);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-body {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  min-width: 400px;
+  max-width: 500px;
 }
 
 .btn-login {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   letter-spacing: 0.05rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.btn-google,
+.btn-facebook {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-google {
@@ -14,18 +52,23 @@ body {
   background-color: #ea4335 !important;
 }
 
+.btn-google:hover {
+  background-color: #d23c2e !important;
+}
+
 .btn-facebook {
   color: white !important;
   background-color: #3b5998 !important;
 }
 
-.card-body {
-  min-width: 400px;
+.btn-facebook:hover {
+  background-color: #2d4373 !important;
 }
 
 .error {
-  color: red;
+  color: #e63946;
   font-weight: bold;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-size: 0.95rem;
 }

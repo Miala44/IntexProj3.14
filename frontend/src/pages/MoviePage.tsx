@@ -5,8 +5,41 @@ import AuthorizeView, { AuthorizedUser } from '../components/AuthorizeView';
 import Logout from '../components/Logout';
 import CookieConsent from 'react-cookie-consent';
 import { useState } from 'react';
+import GenreFilter from '../components/genreFilter';
+
+const allGenres = [
+  'Action',
+  'Adventure',
+  'Anime Series',
+  'International TV Shows',
+  'British TV Shows',
+  'Docuseries',
+  'Children',
+  'Comedies',
+  'Dramas',
+  'Romantic Movies',
+  'Crime TV Shows',
+  'Documentaries',
+  'Family Movies',
+  'Fantasy',
+  'Horror Movies',
+  'Thrillers',
+  "Kids' TV",
+  'Language TV Shows',
+  'Musicals',
+  'Nature TV',
+  'Reality TV',
+  'Spirituality',
+  'TV Action',
+  'TV Comedies',
+  'TV Dramas',
+  'Talk Shows',
+  // You can add or clean up duplicates as needed
+];
 
 function MoviesPage() {
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+
   const [searchTerm, setSearchTerm] = useState('');
   return (
     <AuthorizeView>
@@ -27,9 +60,18 @@ function MoviesPage() {
           />
         </div>
 
+        <GenreFilter
+          genres={allGenres}
+          selectedGenres={selectedGenres}
+          onChange={setSelectedGenres}
+        />
+
         <div className="row flex-grow-1">
           <div className="col-md-12">
-            <MoviesList />
+            <MoviesList
+              searchTerm={searchTerm}
+              selectedGenres={selectedGenres}
+            />
           </div>
         </div>
 

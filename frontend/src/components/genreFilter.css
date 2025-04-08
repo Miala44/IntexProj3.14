@@ -1,0 +1,29 @@
+.genre-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.genre-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.genre-button:hover {
+  background-color: #f0f0f0;
+}
+
+.genre-button.selected {
+  background-color: #6d4242;
+  color: white;
+  border-color: #bdd7f4;
+}

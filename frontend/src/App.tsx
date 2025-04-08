@@ -6,7 +6,10 @@ import RegisterPage from './pages/RegisterPage';
 import MoviesPage from './pages/MoviePage';
 import DetailPage from './pages/DetailPage';
 import PrivacyPage from './pages/PrivacyPage';
+import LandingPage from './pages/LandingPage';
+import RecommendationsPage from './pages/RecommendationsPage';
 import IntroPage from './pages/IntroPage';
+import 'react-multi-carousel/lib/styles.css';
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/privacyPage" element={<PrivacyPage />} />
+            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/recommendations" element={<RecommendationsPage />} />
           </Routes>
         </Router>
       </CartProvider>

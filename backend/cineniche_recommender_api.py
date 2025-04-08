@@ -1,10 +1,12 @@
-
 from flask import Flask, jsonify
 import pandas as pd
 import numpy as np
 from scipy.sparse.linalg import svds
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
 # Load datasets
 ratings_df = pd.read_csv("movies_ratings.csv")
@@ -44,4 +46,4 @@ def recommend_user(user_id):
     return jsonify({"user_id": user_id, "recommendations": recs})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5050, debug=True)

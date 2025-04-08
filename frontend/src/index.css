@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -64,5 +64,100 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+} */
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #e0e0e0;
+  background-color: #121212;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1c1c1c, #2d2d2d);
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #80bfff;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid #3a3a3a;
+  padding: 0.75em 1.5em;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #3a3a3a;
+  color: #58a6ff;
+  border-color: #58a6ff;
+  transform: scale(1.03);
+}
+
+button:focus {
+  outline: 3px solid #58a6ff;
+  outline-offset: 2px;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #202020;
+    background-color: #f5f5f5;
+  }
+
+  body {
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  }
+
+  button {
+    background-color: #ffffff;
+    color: #202020;
+    border: 1px solid #ccc;
+  }
+
+  button:hover {
+    background-color: #e0e0e0;
+    color: #000000;
+    border-color: #646cff;
   }
 }

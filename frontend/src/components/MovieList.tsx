@@ -6,6 +6,11 @@ interface MoviesListProps {
   searchTerm?: string;
 }
 
+interface MoviesListProps {
+  searchTerm?: string;
+  selectedGenres?: string[];
+}
+
 function sanitizeFileName(title: string): string {
   return title
     .normalize('NFD')
@@ -13,8 +18,10 @@ function sanitizeFileName(title: string): string {
     .replace(/[^a-zA-Z0-9\s]/g, '')
     .trim();
 }
-
-const MoviesList: React.FC<MoviesListProps> = ({ searchTerm = '' }) => {
+const MoviesList: React.FC<MoviesListProps> = ({
+  searchTerm = '',
+  selectedGenres = [],
+}) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
@@ -76,9 +83,20 @@ const MoviesList: React.FC<MoviesListProps> = ({ searchTerm = '' }) => {
     };
   }, [movies, totalItems]);
 
-  const filteredMovies = movies.filter((movie) =>
-    (movie.title ?? '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredMovies = movies.filter((movie) => {
+    const titleMatches = (movie.title ?? '')
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const genreList =
+      movie.genre?.split(',').map((g) => g.trim().toLowerCase()) ?? [];
+
+    const genreMatches =
+      selectedGenres.length === 0 ||
+      selectedGenres.some((genre) => genreList.includes(genre.toLowerCase()));
+
+    return titleMatches && genreMatches;
+  });
 
   return (
     <>
