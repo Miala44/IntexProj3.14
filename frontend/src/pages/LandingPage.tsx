@@ -3,10 +3,8 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useNavigate } from 'react-router-dom';
 
-interface Movie {
-  title: string;
-  poster?: string;
-}
+// Each movie is just a string (title)
+type Movie = string;
 
 function sanitizeFileName(name: string | undefined): string {
   if (!name || typeof name !== 'string') return 'default';
@@ -27,6 +25,7 @@ const LandingPage = () => {
     fetch('http://localhost:5050/api/recommend/top-rated')
       .then((res) => res.json())
       .then((data) => {
+        console.log('Top Rated API Response:', data);
         if (Array.isArray(data.recommendations)) {
           setTopRated(data.recommendations);
         } else {
@@ -68,10 +67,9 @@ const LandingPage = () => {
         containerClass="carousel-container"
         itemClass="carousel-item-padding-40-px"
       >
-        {topRated.map((movie, idx) => {
-          const posterPath = movie.poster
-            ? `/Movie Posters/${sanitizeFileName(movie.poster)}.jpg`
-            : '/Movie Posters/default.jpg';
+        {topRated.map((movieTitle, idx) => {
+          console.log('Rendering movie:', movieTitle);
+          const posterPath = `/Movie Posters/${sanitizeFileName(movieTitle)}.jpg`;
 
           return (
             <div
@@ -85,7 +83,7 @@ const LandingPage = () => {
               >
                 <img
                   src={posterPath}
-                  alt={movie.title}
+                  alt={movieTitle}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -96,7 +94,7 @@ const LandingPage = () => {
                   }}
                 />
               </div>
-              <p className="mt-2 text-sm text-center">{movie.title}</p>
+              <p className="mt-2 text-sm text-center">{movieTitle}</p>
             </div>
           );
         })}
