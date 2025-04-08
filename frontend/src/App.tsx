@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MoviesPage from './pages/MoviePage';
 import DetailPage from './pages/DetailPage';
+import IntroPage from './pages/IntroPage';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <CartProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<MoviesPage />} />
+            <Route path="/" element={<IntroPage />} />
+            <Route path="/intro" element={<IntroPage />} />
             <Route path="/movie" element={<MoviesPage />} />
             <Route path="/detailPage/:id" element={<DetailPage />} />
             <Route path="/login" element={<LoginPage />} />

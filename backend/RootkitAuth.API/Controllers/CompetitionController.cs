@@ -58,6 +58,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using RootkitAuth.API.Data;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
@@ -104,6 +105,8 @@ namespace RootkitAuth.API.Controllers
         {
             var movie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == id);
 
+            //movie.Genres = movie.GetGenres();
+
             if (movie == null)
             {
                 return NotFound(new { Message = "Movie not found" });
@@ -111,5 +114,16 @@ namespace RootkitAuth.API.Controllers
 
             return Ok(movie);
         }
+
+        //[HttpGet("GetGenre")]
+        //public IActionResult GetBookCategory()
+        //{
+        //    var bookCategory = _movieDbContext.MoviesTitles
+        //        .Select(b => b.Cat)
+        //        .Distinct()
+        //        .ToList();
+
+        //    return Ok(bookCategory);
+        //}
     }
 }
