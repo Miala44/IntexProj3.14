@@ -3,10 +3,9 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 interface SimilarMoviesCarouselProps {
-  showId: number;
+  title: string; // ✅ Accept the movie title instead of ID
 }
 
-// Movie is just a string title
 type Movie = string;
 
 function sanitizeFileName(name: string): string {
@@ -19,24 +18,28 @@ const responsive = {
   mobile: { breakpoint: { max: 768, min: 0 }, items: 2 },
 };
 
-const SimilarMoviesCarousel = ({ showId }: SimilarMoviesCarouselProps) => {
+const SimilarMoviesCarousel = ({ title }: SimilarMoviesCarouselProps) => {
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5050/api/recommend/movie/${showId}`)
+    if (!title) return;
+
+    fetch(
+      `http://localhost:5050/api/recommend/movie/${encodeURIComponent(title)}`
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log('Similar movie titles:', data.recommendations);
         setRecommendations(data.recommendations || []);
       })
       .catch((err) => console.error('Error fetching similar movies:', err));
-  }, [showId]);
+  }, [title]);
 
   if (recommendations.length === 0) return null;
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-white text-center">
+    <div className="mt-3">
+      <h2 className="text-2xl font-bold mb-3 text-dark text-center">
         Similar Movies
       </h2>
       <Carousel
@@ -49,33 +52,29 @@ const SimilarMoviesCarousel = ({ showId }: SimilarMoviesCarouselProps) => {
         containerClass="carousel-container"
         itemClass="carousel-item-padding-40-px"
       >
-        {recommendations.map((title, idx) => {
-          const posterPath = `/Movie Posters/${sanitizeFileName(title)}.jpg`;
+        {recommendations.map((recTitle, idx) => {
+          const posterPath = `/Movie Posters/${sanitizeFileName(recTitle)}.jpg`;
 
           return (
             <div
               key={idx}
-              className="flex flex-col items-center justify-start px-2"
+              className="flex flex-column align-items-center px-2"
               style={{ width: '160px' }}
             >
               <div
-                className="rounded overflow-hidden shadow-md bg-black"
+                className="bg-dark rounded shadow-sm"
                 style={{ width: '160px', height: '240px' }}
               >
                 <img
                   src={posterPath}
-                  alt={title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
+                  alt={recTitle}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
                 />
               </div>
-              <p className="mt-2 text-sm text-center text-white">{title}</p>
+              <p className="mt-2 text-center text-dark fw-medium">{recTitle}</p>
             </div>
           );
         })}
