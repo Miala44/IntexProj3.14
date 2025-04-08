@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MoviesPage from './pages/MoviePage';
 import DetailPage from './pages/DetailPage';
+import PrivacyPage from './pages/PrivacyPage';
 import IntroPage from './pages/IntroPage';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/detailPage/:id" element={<DetailPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/privacyPage" element={<PrivacyPage />} />
           </Routes>
         </Router>
       </CartProvider>
