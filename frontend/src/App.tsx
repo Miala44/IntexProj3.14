@@ -8,6 +8,7 @@ import DetailPage from './pages/DetailPage';
 import PrivacyPage from './pages/PrivacyPage';
 import LandingPage from './pages/LandingPage';
 import RecommendationsPage from './pages/RecommendationsPage';
+import IntroPage from './pages/IntroPage';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
       <CartProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<MoviesPage />} />
+            <Route path="/" element={<IntroPage />} />
+            <Route path="/intro" element={<IntroPage />} />
             <Route path="/movie" element={<MoviesPage />} />
             <Route path="/detailPage/:id" element={<DetailPage />} />
             <Route path="/login" element={<LoginPage />} />
