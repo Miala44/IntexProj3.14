@@ -66,11 +66,8 @@ function DetailPage() {
             <strong>Description:</strong> {movie.description}
           </p>
           <p>
-            <strong>Genres:</strong>{' '}
-            {Object.entries(movie)
-              .filter(([key, value]) => typeof value === 'number' && value > 0)
-              .map(([key]) => key)
-              .join(', ')}
+            <strong>Genres:</strong>
+            {movie.genre}
           </p>
         </div>
       </div>

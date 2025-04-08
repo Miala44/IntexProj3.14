@@ -105,7 +105,6 @@ namespace RootkitAuth.API.Controllers
         {
             var movie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == id);
 
-            //movie.Genres = movie.GetGenres();
 
             if (movie == null)
             {
