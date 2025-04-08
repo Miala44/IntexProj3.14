@@ -3,7 +3,6 @@ import Header from '../components/Header';
 import { useCart } from '../context/CartContext';
 import { CartItem } from '../types/CartItem';
 import { useState } from 'react';
-import CartSummary from '../components/CartSummary';
 import AuthorizeView, { AuthorizedUser } from '../components/AuthorizeView';
 import Logout from '../components/Logout';
 
@@ -38,7 +37,7 @@ function ProductPage() {
             Logout <AuthorizedUser value="email" />
           </Logout>
         </span>
-        <CartSummary />
+        {/* <CartSummary /> */}
         <h1>Want a cold refreshing {rootbeerName}?</h1>
         <h2>Only ${price.toFixed(2)}</h2>
         <div>
