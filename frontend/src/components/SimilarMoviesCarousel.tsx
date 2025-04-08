@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-interface Movie {
-  title: string;
+interface SimilarMoviesCarouselProps {
+  showId: number;
 }
 
-function sanitizeFileName(title: string): string {
-  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+// Movie is just a string title
+type Movie = string;
+
+function sanitizeFileName(name: string): string {
+  return name.replace(/[^a-zA-Z0-9 ]/g, '').trim();
 }
 
 const responsive = {
@@ -16,28 +19,26 @@ const responsive = {
   mobile: { breakpoint: { max: 768, min: 0 }, items: 2 },
 };
 
-const RecommendationsPage = () => {
-  const [recs, setRecs] = useState<Movie[]>([]);
-  const userId = 2;
+const SimilarMoviesCarousel = ({ showId }: SimilarMoviesCarouselProps) => {
+  const [recommendations, setRecommendations] = useState<Movie[]>([]);
 
   useEffect(() => {
-    console.log('Using user ID:', userId);
-    fetch(`http://localhost:5050/api/recommend/user/${userId}`)
+    fetch(`http://localhost:5050/api/recommend/movie/${showId}`)
       .then((res) => res.json())
       .then((data) => {
-        const recommendations = (data.recommendations || []).map(
-          (title: string) => ({ title }) // Assuming API returns array of strings
-        );
-        setRecs(recommendations);
+        console.log('Similar movie titles:', data.recommendations);
+        setRecommendations(data.recommendations || []);
       })
-      .catch((err) => console.error('Error fetching recommendations:', err));
-  }, [userId]);
+      .catch((err) => console.error('Error fetching similar movies:', err));
+  }, [showId]);
+
+  if (recommendations.length === 0) return null;
 
   return (
-    <div className="bg-black text-white min-h-screen px-6 py-10">
-      <h1 className="text-4xl font-bold text-center mb-6">
-        Your Recommendations
-      </h1>
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold mb-4 text-white text-center">
+        Similar Movies
+      </h2>
       <Carousel
         responsive={responsive}
         infinite
@@ -48,8 +49,9 @@ const RecommendationsPage = () => {
         containerClass="carousel-container"
         itemClass="carousel-item-padding-40-px"
       >
-        {recs.map((movie, idx) => {
-          const posterPath = `/Movie Posters/${sanitizeFileName(movie.title)}.jpg`;
+        {recommendations.map((title, idx) => {
+          const posterPath = `/Movie Posters/${sanitizeFileName(title)}.jpg`;
+
           return (
             <div
               key={idx}
@@ -62,7 +64,7 @@ const RecommendationsPage = () => {
               >
                 <img
                   src={posterPath}
-                  alt={movie.title}
+                  alt={title}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -73,7 +75,7 @@ const RecommendationsPage = () => {
                   }}
                 />
               </div>
-              <p className="mt-2 text-sm text-center">{movie.title}</p>
+              <p className="mt-2 text-sm text-center text-white">{title}</p>
             </div>
           );
         })}
@@ -82,4 +84,4 @@ const RecommendationsPage = () => {
   );
 };
 
-export default RecommendationsPage;
+export default SimilarMoviesCarousel;
