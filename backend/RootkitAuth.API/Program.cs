@@ -60,6 +60,21 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
+// ✅ FORCE Content-Security-Policy header to allow Flask API
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        context.Response.Headers.Remove("Content-Security-Policy");
+        context.Response.Headers.Append("Content-Security-Policy",
+            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000;");
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
