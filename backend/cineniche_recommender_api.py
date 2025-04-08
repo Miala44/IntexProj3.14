@@ -1,10 +1,11 @@
-
 from flask import Flask, jsonify
 import pandas as pd
 import numpy as np
 from scipy.sparse.linalg import svds
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
 
 # Load datasets
 ratings_df = pd.read_csv("movies_ratings.csv")
@@ -24,7 +25,7 @@ predicted_ratings_df = pd.DataFrame(predicted_ratings, index=user_item_matrix.in
 # Build movie lookup
 movie_lookup = titles_df[['show_id', 'title']].drop_duplicates().set_index('show_id')['title'].to_dict()
 
-# Recommendation function
+# Recommendation logic
 def recommend_movies_for_user(user_id, top_n=5):
     if user_id not in predicted_ratings_df.index:
         return []
@@ -40,8 +41,20 @@ def home():
 
 @app.route("/api/recommend/user/<int:user_id>")
 def recommend_user(user_id):
-    recs = recommend_movies_for_user(user_id)
-    return jsonify({"user_id": user_id, "recommendations": recs})
+    rec_titles = recommend_movies_for_user(user_id)
+    return jsonify({"user_id": user_id, "recommendations": rec_titles})
+
+@app.route("/api/recommend/top-rated")
+def top_rated():
+    avg_ratings = ratings_df.groupby('show_id')['rating'].mean()
+    count_ratings = ratings_df.groupby('show_id')['rating'].count()
+
+    min_ratings = 3
+    filtered = avg_ratings[count_ratings >= min_ratings]
+    top_shows = filtered.sort_values(ascending=False).head(10).index.tolist()
+
+    titles = [movie_lookup.get(show_id, f"Unknown ({show_id})") for show_id in top_shows]
+    return jsonify({"recommendations": titles})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5050)
