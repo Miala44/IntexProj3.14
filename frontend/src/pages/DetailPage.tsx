@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Movie } from '../types/Movie'; // Adjust the path if needed
+import SimilarMoviesCarousel from '../components/SimilarMoviesCarousel'; // adjust path if needed
 
 function sanitizeFileName(title: string): string {
   return title.replace(/[^a-zA-Z0-9 ]/g, '').trim();
@@ -71,6 +72,24 @@ function DetailPage() {
           </p>
         </div>
       </div>
+      {/* Floating Similar Movies Carousel */}
+      {movie && movie.title && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            width: '360px',
+            backgroundColor: '#ffffffee',
+            padding: '16px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+            zIndex: 1000,
+          }}
+        >
+          <SimilarMoviesCarousel title={movie.title} />
+        </div>
+      )}
     </div>
   );
 }

@@ -57,6 +57,20 @@ def recommend_movies_for_user(user_id, top_n=5):
     top_recommendations = user_ratings.sort_values(ascending=False).head(top_n).index.tolist()
     return [movie_lookup.get(show_id, f"Unknown ({show_id})") for show_id in top_recommendations]
 
+def get_top_movies_by_genre_column(genre_col, top_n=10, min_ratings=3):
+    genre_ratings = pd.merge(ratings_df, titles_df[['show_id', 'title', genre_col]], on='show_id')
+    genre_ratings = genre_ratings[genre_ratings[genre_col] == 1]
+
+    avg_ratings = genre_ratings.groupby('show_id')['rating'].mean()
+    count_ratings = genre_ratings.groupby('show_id')['rating'].count()
+
+    filtered = avg_ratings[count_ratings >= min_ratings]
+    top_ids = filtered.sort_values(ascending=False).head(top_n).index.tolist()
+
+    return titles_df[titles_df['show_id'].isin(top_ids)][['show_id', 'title']].to_dict(orient='records')
+
+
+
 @app.route("/")
 def home():
     return "CineNiche Recommendation API"
@@ -86,6 +100,30 @@ def recommend_movie(title):
 
     similar_titles = recommend_similar_movies(show_id)
     return jsonify({"title": title, "recommendations": similar_titles})
+
+@app.route("/api/recommend/genre")
+def genre_based_recommendations():
+    genre_columns = [col for col in titles_df.columns if col not in ['show_id', 'title', 'type', 'director', 'cast', 'country', 'release_year', 'rating', 'duration', 'description']]
+    genre_recommendations = {}
+
+    for genre in genre_columns:
+        genre_ratings = pd.merge(ratings_df, titles_df[['show_id', 'title', genre]], on='show_id')
+        genre_ratings = genre_ratings[genre_ratings[genre] == 1]
+
+        avg_ratings = genre_ratings.groupby('show_id')['rating'].mean()
+        count_ratings = genre_ratings.groupby('show_id')['rating'].count()
+
+        filtered = avg_ratings[count_ratings >= 3]
+        top_ids = filtered.sort_values(ascending=False).head(10).index.tolist()
+
+        top_movies = titles_df[titles_df['show_id'].isin(top_ids)][['show_id', 'title']].to_dict(orient='records')
+
+        if len(top_movies) >= 5:
+            genre_recommendations[genre] = top_movies
+
+    return jsonify(genre_recommendations)
+
+
 
 
 if __name__ == "__main__":

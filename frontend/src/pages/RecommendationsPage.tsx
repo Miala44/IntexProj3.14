@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 interface Movie {
   title: string;
+  show_id: string;
+}
+
+interface GenreRecommendations {
+  [genre: string]: Movie[];
 }
 
 function sanitizeFileName(title: string): string {
@@ -18,66 +23,145 @@ const responsive = {
 
 const RecommendationsPage = () => {
   const [recs, setRecs] = useState<Movie[]>([]);
-  const userId = 2;
+  const [genreRecs, setGenreRecs] = useState<GenreRecommendations>({});
+  const [visibleGenres, setVisibleGenres] = useState<string[]>([]);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const userId = 3;
 
   useEffect(() => {
-    console.log('Using user ID:', userId);
     fetch(`http://localhost:5050/api/recommend/user/${userId}`)
       .then((res) => res.json())
       .then((data) => {
         const recommendations = (data.recommendations || []).map(
-          (title: string) => ({ title }) // Assuming API returns array of strings
+          (title: string) => ({
+            title,
+            show_id: '',
+          })
         );
         setRecs(recommendations);
-      })
-      .catch((err) => console.error('Error fetching recommendations:', err));
-  }, [userId]);
+      });
+
+    fetch('http://localhost:5050/api/recommend/genre')
+      .then((res) => res.json())
+      .then((data) => {
+        setGenreRecs(data);
+        setVisibleGenres(Object.keys(data).slice(0, 1)); // load first genre immediately
+      });
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        const allGenres = Object.keys(genreRecs);
+        const nextIndex = visibleGenres.length;
+        if (nextIndex < allGenres.length) {
+          setVisibleGenres((prev) => [...prev, allGenres[nextIndex]]);
+        }
+      }
+    });
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [genreRecs, visibleGenres]);
 
   return (
     <div className="bg-black text-white min-h-screen px-6 py-10">
       <h1 className="text-4xl font-bold text-center mb-6">
         Your Recommendations
       </h1>
-      <Carousel
-        responsive={responsive}
-        infinite
-        autoPlay={false}
-        keyBoardControl
-        customTransition="transform 300ms ease-in-out"
-        transitionDuration={300}
-        containerClass="carousel-container"
-        itemClass="carousel-item-padding-40-px"
-      >
-        {recs.map((movie, idx) => {
-          const posterPath = `/Movie Posters/${sanitizeFileName(movie.title)}.jpg`;
-          return (
-            <div
-              key={idx}
-              className="flex flex-col items-center justify-start px-2"
-              style={{ width: '160px' }}
-            >
+
+      {/* User-Based Recommendations */}
+      {recs.length > 0 && (
+        <Carousel
+          {...{
+            responsive,
+            infinite: true,
+            containerClass: 'carousel-container',
+          }}
+        >
+          {recs.map((movie, idx) => {
+            const posterPath = `/Movie Posters/${sanitizeFileName(movie.title)}.jpg`;
+            return (
               <div
-                className="rounded overflow-hidden shadow-md bg-black"
-                style={{ width: '160px', height: '240px' }}
+                key={idx}
+                className="flex flex-col items-center px-2"
+                style={{ width: '160px' }}
               >
-                <img
-                  src={posterPath}
-                  alt={movie.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
+                <div
+                  className="bg-black shadow-md rounded overflow-hidden"
+                  style={{ width: '160px', height: '240px' }}
+                >
+                  <img
+                    src={posterPath}
+                    alt={movie.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.src = '/Movie Posters/default.jpg';
+                    }}
+                  />
+                </div>
+                <p className="mt-2 text-sm text-center">{movie.title}</p>
               </div>
-              <p className="mt-2 text-sm text-center">{movie.title}</p>
-            </div>
-          );
-        })}
-      </Carousel>
+            );
+          })}
+        </Carousel>
+      )}
+
+      {/* Genre-Based Recommendations */}
+      {visibleGenres.map((genre) => (
+        <div key={genre} className="mt-12">
+          <h2 className="text-2xl font-semibold mb-3">
+            {genre} Recommendations
+          </h2>
+          <Carousel
+            {...{
+              responsive,
+              infinite: false,
+              containerClass: 'carousel-container',
+            }}
+          >
+            {genreRecs[genre].map((movie, idx) => {
+              const posterPath = `/Movie Posters/${sanitizeFileName(movie.title)}.jpg`;
+              return (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center px-2"
+                  style={{ width: '160px' }}
+                >
+                  <div
+                    className="bg-black shadow-md rounded overflow-hidden"
+                    style={{ width: '160px', height: '240px' }}
+                  >
+                    <img
+                      src={posterPath}
+                      alt={movie.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                      onError={(e) => {
+                        e.currentTarget.src = '/Movie Posters/default.jpg';
+                      }}
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-center">{movie.title}</p>
+                </div>
+              );
+            })}
+          </Carousel>
+        </div>
+      ))}
+
+      <div ref={observerRef} className="h-12 mt-8" />
     </div>
   );
 };
