@@ -61,6 +61,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using RootkitAuth.API.Data;
+using RootkitAuth.API.Data.NewDbModels;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace RootkitAuth.API.Controllers
