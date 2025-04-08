@@ -92,7 +92,7 @@ const LandingPage = () => {
                     objectFit: 'cover',
                   }}
                   onError={(e) => {
-                    e.currentTarget.src = '/Movie Posters/default.jpg';
+                    e.currentTarget.style.display = 'none';
                   }}
                 />
               </div>
