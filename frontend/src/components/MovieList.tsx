@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Movie from '../types/Movie'; // Adjust the path if needed
+import Movie from '../types/Movie';
+
+interface MoviesListProps {
+  searchTerm?: string;
+}
 
 function sanitizeFileName(title: string): string {
   return title
-    .normalize('NFD') // Decomposes accented characters
-    .replace(/[\u0300-\u036f]/g, '') // Removes diacritical marks
-    .replace(/[^a-zA-Z0-9\s]/g, '') // Keeps alphanumeric characters and spaces
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
     .trim();
 }
 
-function MoviesList() {
+const MoviesList: React.FC<MoviesListProps> = ({ searchTerm = '' }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
@@ -18,7 +22,6 @@ function MoviesList() {
   const navigate = useNavigate();
   const loader = useRef<HTMLDivElement | null>(null);
 
-  // Fetch movies when pageNum changes
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -49,7 +52,6 @@ function MoviesList() {
     fetchMovies();
   }, [pageNum]);
 
-  // Infinite scroll logic
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -74,18 +76,23 @@ function MoviesList() {
     };
   }, [movies, totalItems]);
 
+  const filteredMovies = movies.filter((movie) =>
+    (movie.title ?? '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <div className="row">
-        {movies.map((movie) => {
-          const posterPath = `/Movie Posters/${sanitizeFileName(movie.title || '')}.jpg`;
+        {filteredMovies.map((movie) => {
+          const safeTitle = movie.title ?? 'Untitled';
+          const posterPath = `/Movie Posters/${sanitizeFileName(safeTitle)}.jpg`;
 
           return (
             <div key={movie.showId} className="col-md-3 mb-4">
               <div id="movieCard" className="card h-100">
                 <img
                   src={posterPath}
-                  alt={movie.title}
+                  alt={safeTitle}
                   className="card-img-top"
                   style={{ height: '300px', objectFit: 'cover' }}
                   onError={(e) =>
@@ -93,9 +100,9 @@ function MoviesList() {
                   }
                 />
                 <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">{movie.title}</h5>
+                  <h5 className="card-title">{safeTitle}</h5>
                   <p className="card-text">
-                    <strong>Director:</strong> {movie.director}
+                    <strong>Director:</strong> {movie.director ?? 'Unknown'}
                   </p>
                   <button
                     className="btn btn-primary mt-auto"
@@ -110,7 +117,6 @@ function MoviesList() {
         })}
       </div>
 
-      {/* Loader div triggers the infinite scroll */}
       <div ref={loader} className="text-center my-4">
         {movies.length < totalItems && (
           <span className="spinner-border text-secondary" />
@@ -118,6 +124,6 @@ function MoviesList() {
       </div>
     </>
   );
-}
+};
 
 export default MoviesList;
