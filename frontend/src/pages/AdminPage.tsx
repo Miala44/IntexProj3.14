@@ -31,7 +31,7 @@ const AdminPage = () => {
     loadMovies();
   }, []);
 
-  const handleDelete = async (showId: string) => {
+  const handleDelete = async (showId: number) => {
     const confirmDelete = window.confirm(
       'Are you sure you want to delete this project?'
     );
@@ -50,8 +50,8 @@ const AdminPage = () => {
 
   return (
     <div>
-      <h1>Admin - Movies</h1>
-      {!showForm && (
+        <h1 style={{ color: 'white' }}>Admin - Movies</h1>
+        {!showForm && (
         <button
           className="btn btn-success mb-3"
           onClick={() => setShowForm(true)}
@@ -64,13 +64,11 @@ const AdminPage = () => {
         <NewMovieForm
           onSuccess={() => {
             setShowForm(false);
-            fetchMovies(pageSize, pageNum, []).then((data) =>
-              setMovies(data.movies)
-            );
+            fetchMovies(pageSize, pageNum, []).then((data) => {
+              setMovies(data.movies);
+            });
           }}
-          onCancel={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onCancel={() => setShowForm(false)}
         />
       )}
 

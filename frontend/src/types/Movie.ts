@@ -1,5 +1,5 @@
 export interface Movie {
-  showId: string; // ShowId is a string and optional
+  showId: number; // ShowId is a string and optional
   type?: string; // Type is a string and optional
   title?: string; // Title of the movie
   director?: string; // Director's name

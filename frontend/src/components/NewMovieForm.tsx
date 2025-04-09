@@ -97,7 +97,8 @@ const NewMovieForm = ({ onSuccess, onCancel }: NewMovieFormProps) => {
             onChange={handleChange}/></label>
 
             <button type="submit">Add Movie</button>
-            <button type="button" onClick={onCancel}>Cancel</button>
+            <button type="button" onClick={() => { console.log("cancel clicked"); onCancel(); }}>Cancel</button>
+
         </form>
     )
     }

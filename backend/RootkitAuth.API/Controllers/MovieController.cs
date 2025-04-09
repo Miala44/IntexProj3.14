@@ -175,7 +175,7 @@ namespace RootkitAuth.API.Controllers
 
         //}
         [HttpPut("UpdateMovie/{showId}")]
-        public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
+                public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
         {
             Console.WriteLine($" Updating movie with showId: {showId}");
 

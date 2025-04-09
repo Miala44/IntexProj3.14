@@ -57,11 +57,12 @@ export const addMovie = async (newMovie: Movie): Promise<Movie> => {
 };
 
 export const updateMovie = async (
-  showId: string, // ✅ changed to string
+  showId: string, 
   updatedMovie: Movie
 ): Promise<Movie> => {
   try {
     const response = await fetch(`${API_URL}/Movies/UpdateMovie/${showId}`, {
+
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ export const updateMovie = async (
   }
 };
 
-export const deleteMovie = async (showId: string): Promise<void> => {
+export const deleteMovie = async (showId: number): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/Movies/DeleteMovie/${showId}`, {
       method: 'DELETE',

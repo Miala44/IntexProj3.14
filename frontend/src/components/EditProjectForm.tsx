@@ -10,15 +10,28 @@ interface EditMovieFormProps {
 
 const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
   const [formData, setFormData] = useState<Movie>({ ...movie });
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   await updateMovie(String(formData.showId), formData);
+  //   onSuccess();
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateMovie(String(formData.showId), formData);
-    onSuccess();
+    try {
+      const res = await updateMovie(String(formData.showId), formData);
+      console.log("Movie updated successfully", res);
+      onSuccess();
+    } catch (error) {
+      console.error("Update failed", error);
+      alert("Failed to update movie. Check console.");
+    }
   };
 
   return (
