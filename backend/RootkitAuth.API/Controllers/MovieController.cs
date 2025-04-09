@@ -69,7 +69,7 @@ namespace RootkitAuth.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class MoviesController : ControllerBase
     {
         private MovieDbContext _movieDbContext;
@@ -104,6 +104,7 @@ namespace RootkitAuth.API.Controllers
 
         [HttpGet("GetMovieById/{id}")]
         public IActionResult GetMovieById(string id)
+
         {
             var movie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == id);
 
@@ -125,46 +126,96 @@ namespace RootkitAuth.API.Controllers
 
         }
 
+
+
+        //[HttpPut("UpdateMovie/{showId}")]
+        //public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
+        //{
+        //    var existingMovie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == showId);
+
+        //    if (existingMovie == null)
+        //    {
+        //        return NotFound(new { Message = "Movie not found" });
+        //    }
+
+
+        //    existingMovie.ShowId = updatedMovie.ShowId;
+        //    existingMovie.Type = updatedMovie.Type;
+        //    existingMovie.Title = updatedMovie.Title;
+        //    existingMovie.Director = updatedMovie.Director;
+        //    existingMovie.Cast = updatedMovie.Cast;
+        //    existingMovie.Country = updatedMovie.Country;
+        //    existingMovie.ReleaseYear = updatedMovie.ReleaseYear;
+        //    existingMovie.Rating = updatedMovie.Rating;
+        //    existingMovie.Duration = updatedMovie.Duration;
+        //    existingMovie.Description = updatedMovie.Description;
+        //    existingMovie.Genre = updatedMovie.Genre;
+
+        //    _movieDbContext.MoviesTitles.Update(existingMovie);
+        //    _movieDbContext.SaveChanges();
+
+        //    return Ok(existingMovie);
+        //}
+
+        //[HttpDelete("DeleteMovie/{showId}")]
+        //public IActionResult DeleteMovie(int showId)
+        //{
+        //    var movie = _movieDbContext.MoviesTitles.Find(showId);
+
+        //    if (movie == null)
+        //    {
+        //        return NotFound(new {message = "Project not found"});
+
+        //    }
+
+        //    _movieDbContext.MoviesTitles.Remove(movie);
+        //    _movieDbContext.SaveChanges();
+
+        //    return NoContent();
+
+        //}
         [HttpPut("UpdateMovie/{showId}")]
-        public IActionResult UpdateMovie(int showId, [FromBody] MoviesTitle updatedMovie)
+        public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
         {
-            var existingMovie = _movieDbContext.MoviesTitles.Find(showId);
+            Console.WriteLine($" Updating movie with showId: {showId}");
 
-            existingMovie.ShowId = updatedMovie.ShowId;
-            existingMovie.Type = updatedMovie.Type;
-            existingMovie.Title = updatedMovie.Title;
-            existingMovie.Director = updatedMovie.Director;
-            existingMovie.Cast = updatedMovie.Cast;
-            existingMovie.Country = updatedMovie.Country;
-            existingMovie.ReleaseYear = updatedMovie.ReleaseYear;
-            existingMovie.Rating = updatedMovie.Rating;
-            existingMovie.Duration = updatedMovie.Duration;
-            existingMovie.Description = updatedMovie.Description;
-            existingMovie.Genre = updatedMovie.Genre;
+            var existingMovie = _movieDbContext.MoviesTitles.FirstOrDefault(m => m.ShowId == showId);
 
-            _movieDbContext.MoviesTitles.Update(existingMovie);
-            _movieDbContext.SaveChanges();
-
-            return Ok(existingMovie);
-        }
-
-        [HttpDelete("DeleteMovie/{showId}")]
-        public IActionResult DeleteMovie(int showId)
-        {
-            var movie = _movieDbContext.MoviesTitles.Find(showId);
-
-            if (movie == null)
+            if (existingMovie == null)
             {
-                return NotFound(new {message = "Project not found"});
-
+                Console.WriteLine(" Movie not found.");
+                return NotFound(new { Message = $"Movie with ID {showId} not found" });
             }
 
-            _movieDbContext.MoviesTitles.Remove(movie);
-            _movieDbContext.SaveChanges();
+            try
+            {
+                Console.WriteLine(" Found movie. Updating properties...");
 
-            return NoContent();
+                existingMovie.Type = updatedMovie.Type;
+                existingMovie.Title = updatedMovie.Title;
+                existingMovie.Director = updatedMovie.Director;
+                existingMovie.Cast = updatedMovie.Cast;
+                existingMovie.Country = updatedMovie.Country;
+                existingMovie.ReleaseYear = updatedMovie.ReleaseYear;
+                existingMovie.Rating = updatedMovie.Rating;
+                existingMovie.Duration = updatedMovie.Duration;
+                existingMovie.Description = updatedMovie.Description;
+                existingMovie.Genre = updatedMovie.Genre;
 
+                Console.WriteLine(" Saving changes...");
+                _movieDbContext.SaveChanges();
+                Console.WriteLine(" Changes saved.");
+
+                return Ok(existingMovie);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(" ERROR during update: " + ex.Message);
+                return StatusCode(500, new { Message = "Something went wrong", Detail = ex.Message });
+            }
         }
+
+
 
 
         //[HttpGet("GetGenre")]

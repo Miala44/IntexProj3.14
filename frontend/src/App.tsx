@@ -9,6 +9,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import LandingPage from './pages/LandingPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import IntroPage from './pages/IntroPage';
+import AdminPage from './pages/AdminPage';
 import 'react-multi-carousel/lib/styles.css';
 
 function App() {

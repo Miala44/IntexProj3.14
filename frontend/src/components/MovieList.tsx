@@ -38,10 +38,17 @@ const MoviesList: React.FC<MoviesListProps> = ({
   const loader = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const loadMovies = async () => {
+    const fetchMovies = async () => {
       try {
-        setLoading(true);
-        const data = await fetchMovies(pageSize, pageNum, selectedCategories);
+        const response = await fetch(
+          `https://localhost:5000/Movies/GetAllMovies?pageSize=${pageSize}&pageNum=${pageNum}`,
+          {
+            credentials: 'include',
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch movies');
+        const data = await response.json();
 
         setMovies((prev) => {
           const newMovies = data.movies.filter(
@@ -51,12 +58,9 @@ const MoviesList: React.FC<MoviesListProps> = ({
           return [...prev, ...newMovies];
         });
 
-        setTotalItems(data.totalNumMovies);
+        setTotalItems(data.totalMovies);
       } catch (error) {
         console.error('Error fetching movies:', error);
-        setError('Failed to fetch movies');
-      } finally {
-        setLoading(false);
       }
     };
 

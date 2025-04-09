@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RootkitAuth.API.Data.NewDbModels;
 
 public partial class MoviesTitle
 {
+    [Key]
     public string? ShowId { get; set; }
 
     public string? Type { get; set; }

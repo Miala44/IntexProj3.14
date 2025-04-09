@@ -1,5 +1,4 @@
 import './GenreFilter.css';
-
 function GenreFilter({
   genres,
   selectedGenres,
@@ -15,7 +14,6 @@ function GenreFilter({
       : [...selectedGenres, genre];
     onChange(updated);
   };
-
   return (
     <div className="genre-buttons">
       {genres.map((genre) => (
@@ -32,5 +30,4 @@ function GenreFilter({
     </div>
   );
 }
-
 export default GenreFilter;
