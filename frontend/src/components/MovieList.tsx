@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import Movie from '../types/Movie'; // Adjust the path if needed
+import { fetchMovies } from '../api/MoviesAPI';
 
 function sanitizeFileName(title: string): string {
   return title
@@ -17,21 +18,16 @@ function MoviesList() {
   const [totalItems, setTotalItems] = useState<number>(0);
   const navigate = useNavigate();
   const loader = useRef<HTMLDivElement | null>(null);
-
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true)
   // Fetch movies when pageNum changes
   useEffect(() => {
-    const fetchMovies = async () => {
+    const loadMovies = async () => {
+
       try {
-        const response = await fetch(
-          `https://localhost:5000/Movies/GetAllMovies?pageSize=${pageSize}&pageNum=${pageNum}`,
-          {
-            credentials: 'include',
-          }
-        );
-
-        if (!response.ok) throw new Error('Failed to fetch movies');
-        const data = await response.json();
-
+        setLoading(true);
+        const data = await fetchMovies(pageSize, pageNum, selectedCategories);
+      
         setMovies((prev) => {
           const newMovies = data.movies.filter(
             (newMovie: Movie) =>
@@ -39,15 +35,22 @@ function MoviesList() {
           );
           return [...prev, ...newMovies];
         });
-
-        setTotalItems(data.totalMovies);
+      
+        setTotalItems(data.totalNumMovies);
       } catch (error) {
         console.error('Error fetching movies:', error);
+        setError('Failed to fetch movies');
+      } finally {
+        setLoading(false);
       }
-    };
+      
 
-    fetchMovies();
-  }, [pageNum]);
+    loadMovies();
+}}, [pageNum, pageSize, selectedCategories ]); 
+ 
+
+if (loading) return <p>Loading movies...</p>
+if (error) return <p className='text-red-500'>Error: {error}</p>
 
   // Infinite scroll logic
   useEffect(() => {

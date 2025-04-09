@@ -1,5 +1,5 @@
 export interface Movie {
-  showId?: string; // ShowId is a string and optional
+  showId: number; // ShowId is a string and optional
   type?: string; // Type is a string and optional
   title?: string; // Title of the movie
   director?: string; // Director's name
@@ -9,7 +9,7 @@ export interface Movie {
   rating?: string; // Rating (string, could be a number, but keeping it as string)
   duration?: string; // Duration of the movie in minutes (or other unit)
   description?: string; // Description of the movie
-  genre?: string[]; // Array of genres the movie belongs to
+  genre?: string; // Array of genres the movie belongs to
 }
 
 export default Movie;

@@ -9,6 +9,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import LandingPage from './pages/LandingPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import IntroPage from './pages/IntroPage';
+import AdminPage from './pages/adminPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/privacyPage" element={<PrivacyPage />} />
             <Route path="/" element={<LandingPage />} />
             <Route path="/recommendations" element={<RecommendationsPage />} />
+            <Route path="/adminmovies" element={<AdminPage/>} />
           </Routes>
         </Router>
       </CartProvider>
