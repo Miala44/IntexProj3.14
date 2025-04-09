@@ -58,9 +58,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Evaluation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using RootkitAuth.API.Data;
+using RootkitAuth.API.Data.NewDbModels;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace RootkitAuth.API.Controllers
@@ -113,6 +115,57 @@ namespace RootkitAuth.API.Controllers
 
             return Ok(movie);
         }
+
+        [HttpPost("Add")]
+        public IActionResult AddMovie([FromBody] MoviesTitle newMovie)
+        {
+            _movieDbContext.MoviesTitles.Add(newMovie);
+            _movieDbContext.SaveChanges();
+            return Ok(newMovie);
+
+        }
+
+        [HttpPut("UpdateMovie/{showId}")]
+        public IActionResult UpdateMovie(int showId, [FromBody] MoviesTitle updatedMovie)
+        {
+            var existingMovie = _movieDbContext.MoviesTitles.Find(showId);
+
+            existingMovie.ShowId = updatedMovie.ShowId;
+            existingMovie.Type = updatedMovie.Type;
+            existingMovie.Title = updatedMovie.Title;
+            existingMovie.Director = updatedMovie.Director;
+            existingMovie.Cast = updatedMovie.Cast;
+            existingMovie.Country = updatedMovie.Country;
+            existingMovie.ReleaseYear = updatedMovie.ReleaseYear;
+            existingMovie.Rating = updatedMovie.Rating;
+            existingMovie.Duration = updatedMovie.Duration;
+            existingMovie.Description = updatedMovie.Description;
+            existingMovie.Genre = updatedMovie.Genre;
+
+            _movieDbContext.MoviesTitles.Update(existingMovie);
+            _movieDbContext.SaveChanges();
+
+            return Ok(existingMovie);
+        }
+
+        [HttpDelete("DeleteMovie/{showId}")]
+        public IActionResult DeleteMovie(int showId)
+        {
+            var movie = _movieDbContext.MoviesTitles.Find(showId);
+
+            if (movie == null)
+            {
+                return NotFound(new {message = "Project not found"});
+
+            }
+
+            _movieDbContext.MoviesTitles.Remove(movie);
+            _movieDbContext.SaveChanges();
+
+            return NoContent();
+
+        }
+
 
         //[HttpGet("GetGenre")]
         //public IActionResult GetBookCategory()

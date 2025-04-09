@@ -17,15 +17,16 @@ function App() {
       <CartProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<IntroPage />} />
+            <Route path="/moviepage" element={<IntroPage />} />
             <Route path="/intro" element={<IntroPage />} />
             <Route path="/movie" element={<MoviesPage />} />
             <Route path="/detailPage/:id" element={<DetailPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/privacyPage" element={<PrivacyPage />} />
-            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/recommendations" element={<RecommendationsPage />} />
+            <Route path="/adminmovies" element={<AdminPage />} />
           </Routes>
         </Router>
       </CartProvider>

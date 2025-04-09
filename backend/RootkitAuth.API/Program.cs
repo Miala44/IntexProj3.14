@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RootkitAuth.API.Data;
+using RootkitAuth.API.Data.NewDbModels;
 using RootkitAuth.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 
 builder.Services.AddDbContext<CompetitionDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("CompetitionConnection")));
@@ -59,6 +58,21 @@ builder.Services.AddCors(options =>
         });
 });
 var app = builder.Build();
+
+// ✅ FORCE Content-Security-Policy header to allow Flask API
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        context.Response.Headers.Remove("Content-Security-Policy");
+        context.Response.Headers.Append("Content-Security-Policy",
+            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000;");
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
