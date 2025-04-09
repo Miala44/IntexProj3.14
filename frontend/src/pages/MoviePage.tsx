@@ -6,6 +6,7 @@ import Logout from '../components/Logout';
 import CookieConsent from 'react-cookie-consent';
 import { useState } from 'react';
 import GenreFilter from '../components/genreFilter';
+import './Identity.css';
 
 const allGenres = [
   'Action',
@@ -43,11 +44,15 @@ function MoviesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   return (
     <AuthorizeView>
-      <span>
+      <div className="logout-container">
         <Logout>
-          Logout <AuthorizedUser value="email" />
+          <i className="fas fa-sign-out-alt me-2"></i>
+          Logout{' '}
+          <span className="user-email">
+            <AuthorizedUser value="email" />
+          </span>
         </Logout>
-      </span>
+      </div>
       <div className="container mt-4 d-flex flex-column min-vh-100">
         <Header />
         <div className="mb-3">

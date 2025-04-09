@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(to right, #0046a3, #33aeff);
+  background: linear-gradient(to right, #6e0303, #214b67);
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -71,4 +71,61 @@ body {
   text-align: center;
   margin-top: 12px;
   font-size: 0.95rem;
+}
+
+.main-header {
+  padding: 2rem 0 1rem;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* .movie-card {
+  background-color: #1c1c1c;
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+} */
+
+.card.movie-card {
+  background-color: transparent !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.card.movie-card:hover {
+  transform: translateY(-4px);
+  box-shadow: none !important; /* Remove glow or drop shadow */
+}
+
+.card-img-top {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.movies-container .row {
+  background: transparent !important;
 }

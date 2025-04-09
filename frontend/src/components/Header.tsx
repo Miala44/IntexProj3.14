@@ -1,7 +1,16 @@
 function Header() {
   return (
-    <div className="row bg-secondary text-white">
-      <h1 className="RKHeader">Movies</h1>
+    <div>
+      <h1
+        className="main-title"
+        style={{
+          fontFamily: 'Times New Roman, Times, serif',
+          textTransform: 'none',
+          fontSize: '3rem',
+        }}
+      >
+        CineNiche.
+      </h1>
     </div>
   );
 }

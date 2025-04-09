@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Movie from '../types/Movie';
+import '../pages/identity.css';
 
 interface MoviesListProps {
   searchTerm?: string;
@@ -100,35 +101,40 @@ const MoviesList: React.FC<MoviesListProps> = ({
 
   return (
     <>
-      <div className="row">
+      <div
+        className="row"
+        style={{
+          background: 'transparent',
+          margin: 0,
+          padding: 0,
+          border: 'none',
+        }}
+      >
         {filteredMovies.map((movie) => {
           const safeTitle = movie.title ?? 'Untitled';
           const posterPath = `/Movie Posters/${sanitizeFileName(safeTitle)}.jpg`;
 
           return (
-            <div key={movie.showId} className="col-md-3 mb-4">
-              <div id="movieCard" className="card h-100">
+            <div key={movie.showId} className="col-md-2 mb-4">
+              <div
+                // id="movieCard"
+                className="card movie-card h-100"
+                style={{ cursor: 'pointer' }}
+                onClick={() => navigate(`/detailPage/${movie.showId}`)}
+              >
                 <img
                   src={posterPath}
                   alt={safeTitle}
                   className="card-img-top"
-                  style={{ height: '300px', objectFit: 'cover' }}
+                  style={{
+                    width: '100%',
+                    objectFit: 'cover',
+                    aspectRatio: '2 / 3', // modern browsers
+                  }}
                   onError={(e) =>
                     (e.currentTarget.src = '/Movie Posters/default.jpg')
                   }
                 />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">{safeTitle}</h5>
-                  <p className="card-text">
-                    <strong>Director:</strong> {movie.director ?? 'Unknown'}
-                  </p>
-                  <button
-                    className="btn btn-primary mt-auto"
-                    onClick={() => navigate(`/detailPage/${movie.showId}`)}
-                  >
-                    Movie Details!
-                  </button>
-                </div>
               </div>
             </div>
           );
