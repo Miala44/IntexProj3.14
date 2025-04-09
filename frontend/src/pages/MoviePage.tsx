@@ -42,9 +42,12 @@ function MoviesPage() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [hideMature, setHideMature] = useState<boolean>(false);
+
   return (
     <AuthorizeView>
-      <div className="logout-container">
+      <div className="d-flex justify-content-end logout-container mb-2">
         <Logout>
           <i className="fas fa-sign-out-alt me-2"></i>
           Logout{' '}
@@ -71,11 +74,25 @@ function MoviesPage() {
           onChange={setSelectedGenres}
         />
 
+        <div className="mature-toggle-wrapper mb-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="matureToggle"
+            checked={hideMature}
+            onChange={() => setHideMature((prev) => !prev)}
+          />
+          <label className="form-check-label" htmlFor="matureToggle">
+            Kids Mode
+          </label>
+        </div>
+
         <div className="row flex-grow-1">
           <div className="col-md-12">
             <MoviesList
               searchTerm={searchTerm}
               selectedGenres={selectedGenres}
+              hideMature={hideMature}
             />
           </div>
         </div>

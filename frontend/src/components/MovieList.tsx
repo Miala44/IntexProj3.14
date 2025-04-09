@@ -12,6 +12,12 @@ interface MoviesListProps {
   selectedGenres?: string[];
 }
 
+interface MoviesListProps {
+  searchTerm?: string;
+  selectedGenres?: string[];
+  hideMature?: boolean;
+}
+
 function sanitizeFileName(title: string): string {
   return title
     .normalize('NFD')
@@ -22,6 +28,7 @@ function sanitizeFileName(title: string): string {
 const MoviesList: React.FC<MoviesListProps> = ({
   searchTerm = '',
   selectedGenres = [],
+  hideMature = false,
 }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [pageSize] = useState<number>(10);
@@ -96,7 +103,19 @@ const MoviesList: React.FC<MoviesListProps> = ({
       selectedGenres.length === 0 ||
       selectedGenres.some((genre) => genreList.includes(genre.toLowerCase()));
 
-    return titleMatches && genreMatches;
+    const excludedRatings = [
+      'PG-13',
+      'R',
+      'TV-14',
+      'TV-MA',
+      'NR',
+      'UR',
+      '74 MIN',
+    ];
+
+    const rating = (movie.rating ?? '').trim().toUpperCase();
+    const ratingMatches = !hideMature || !excludedRatings.includes(rating);
+    return titleMatches && genreMatches && ratingMatches;
   });
 
   return (

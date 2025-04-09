@@ -1,6 +1,6 @@
 function Header() {
   return (
-    <div>
+    <div style={{ marginBottom: '1.5rem' }}>
       <h1
         className="main-title"
         style={{
