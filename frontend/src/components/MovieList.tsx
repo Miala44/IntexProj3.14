@@ -41,7 +41,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
     const fetchMovies = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5000/Movies/GetAllMovies?pageSize=${pageSize}&pageNum=${pageNum}`,
+          `https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/Movies/GetAllMovies?pageSize=${pageSize}&pageNum=${pageNum}`,
           {
             credentials: 'include',
           }

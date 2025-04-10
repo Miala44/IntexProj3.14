@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'; // ✅ Import Link from react-router-dom
 import MoviesList from '../components/MovieList';
 import Header from '../components/Header';
-import AuthorizeView, { AuthorizedUser } from '../components/AuthorizeView';
-import Logout from '../components/Logout';
+import AuthorizeView from '../components/AuthorizeView';
+// import Logout from '../components/Logout';
 import CookieConsent from 'react-cookie-consent';
 import { useState } from 'react';
 import GenreFilter from '../components/GenreFilter';

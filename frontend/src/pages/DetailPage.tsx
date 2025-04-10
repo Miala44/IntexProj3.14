@@ -15,7 +15,7 @@ function DetailPage() {
   useEffect(() => {
     const fetchMovie = async () => {
       const response = await fetch(
-        `https://localhost:5000/Movies/GetMovieById/${id}`,
+        `https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/Movies/GetMovieById/${id}`,
         { credentials: 'include' }
       );
       const data = await response.json();
@@ -23,7 +23,7 @@ function DetailPage() {
     };
     const fetchRatings = async () => {
       const response = await fetch(
-        `https://localhost:5000/Movies/rating-summary/${id}`,
+        `https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/Movies/rating-summary/${id}`,
         { credentials: 'include' }
       );
       if (response.ok) {
@@ -41,19 +41,22 @@ function DetailPage() {
       return;
     }
     try {
-      const response = await fetch('https://localhost:5000/Movies/rate', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ showId: id, rating }),
-      });
+      const response = await fetch(
+        'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/Movies/rate',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ showId: id, rating }),
+        }
+      );
       const text = await response.text();
       if (response.ok) {
         setMessage(':white_check_mark: Rating submitted!');
         setUserRating(rating); // Optimistically update userRating
         // Optionally, refresh average rating:
         const updated = await fetch(
-          `https://localhost:5000/Movies/rating-summary/${id}`,
+          `https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/Movies/rating-summary/${id}`,
           {
             credentials: 'include',
           }

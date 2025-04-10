@@ -5,7 +5,7 @@ import {
   Route,
   useLocation,
 } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
+// import { CartProvider } from './context/CartContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MoviesPage from './pages/MoviePage';
@@ -20,11 +20,11 @@ import Logout from './components/Logout';
 import NavBar from './components/NavBar';
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </CartProvider>
+    // <CartProvider>
+    <Router>
+      <AppContent />
+    </Router>
+    // </CartProvider>
   );
 }
 // Moved the logic here so it's within <Router> context

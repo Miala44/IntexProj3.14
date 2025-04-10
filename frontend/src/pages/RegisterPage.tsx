@@ -92,11 +92,14 @@ function Register() {
       return;
     }
     try {
-      const response = await fetch('https://localhost:5000/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
+      const response = await fetch(
+        'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/register',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+        }
+      );
       if (!response.ok) {
         const errorData = await response.text();
         throw new Error(errorData || 'Registration failed.');

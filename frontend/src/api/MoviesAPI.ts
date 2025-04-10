@@ -110,7 +110,11 @@ interface FetchMoviesResponse {
   totalNumMovies: number;
 }
 
-const API_URL = 'https://localhost:5000';
+// https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net => https://localhost:5000
+
+// const API_URL = 'https://localhost:5000';
+const API_URL =
+  'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net';
 
 // Generic fetch wrapper that auto handles auth + errors
 const handleAuthFetch = async (url: string, options: RequestInit = {}) => {
