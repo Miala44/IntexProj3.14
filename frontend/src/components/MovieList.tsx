@@ -136,7 +136,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
           return (
             <div key={movie.showId} className="col-md-2 mb-4">
               <div
-                // id="movieCard"
                 className="card movie-card h-100"
                 style={{ cursor: 'pointer' }}
                 onClick={() => navigate(`/detailPage/${movie.showId}`)}
@@ -148,12 +147,23 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   style={{
                     width: '100%',
                     objectFit: 'cover',
-                    aspectRatio: '2 / 3', // modern browsers
+                    aspectRatio: '2 / 3',
                   }}
                   onError={(e) =>
                     (e.currentTarget.src = '/Movie Posters/default.jpg')
                   }
                 />
+                <div
+                  style={{
+                    textAlign: 'center',
+                    color: 'white',
+                    fontWeight: '600',
+                    marginTop: '0.5rem',
+                    fontSize: '1rem',
+                  }}
+                >
+                  {safeTitle}
+                </div>
               </div>
             </div>
           );

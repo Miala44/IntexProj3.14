@@ -49,7 +49,7 @@ const AdminPage = () => {
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
-    <div>
+    <div style={{ color: 'white' }}>
       <h1>Admin - Movies</h1>
       {!showForm && (
         <button
@@ -68,9 +68,10 @@ const AdminPage = () => {
               setMovies(data.movies)
             );
           }}
-          onCancel={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onCancel={() => setShowForm(false)}
+          // onCancel={function (): void {
+          //   throw new Error('Function not implemented.');
+          // }}
         />
       )}
 

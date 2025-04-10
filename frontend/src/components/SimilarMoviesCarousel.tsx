@@ -18,7 +18,7 @@ const SimilarMoviesCarousel = ({ title }: SimilarMoviesCarouselProps) => {
   useEffect(() => {
     if (!title) return;
     fetch(
-      `http://localhost:5050/api/recommend/movie/${encodeURIComponent(title)}`
+      `https://group3-14flaskapi-hhcxf9g7f0h7cee7.westus-01.azurewebsites.net/api/recommend/movie/${encodeURIComponent(title)}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -30,7 +30,7 @@ const SimilarMoviesCarousel = ({ title }: SimilarMoviesCarouselProps) => {
   if (recommendations.length === 0) return null;
   return (
     <div className="mt-3">
-      <h2 className="text-2xl font-bold mb-3 text-dark text-center">
+      <h2 className="text-2xl font-bold mb-3 text-white text-center">
         Similar Movies
       </h2>
       <Carousel

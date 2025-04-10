@@ -5,7 +5,7 @@ import AuthorizeView, { AuthorizedUser } from '../components/AuthorizeView';
 import Logout from '../components/Logout';
 import CookieConsent from 'react-cookie-consent';
 import { useState } from 'react';
-import GenreFilter from '../components/genreFilter';
+import GenreFilter from '../components/GenreFilter';
 import './Identity.css';
 
 const allGenres = [

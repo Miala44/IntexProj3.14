@@ -21,9 +21,11 @@ const RecommendationsPage = () => {
   const [genreRecs, setGenreRecs] = useState<GenreRecommendations>({});
   const [visibleGenres, setVisibleGenres] = useState<string[]>([]);
   const observerRef = useRef<HTMLDivElement | null>(null);
-  const userId = 3;
+  // const userId = 3;
   useEffect(() => {
-    fetch(`http://localhost:5050/api/recommend/user/${userId}`)
+    fetch(
+      'https://group3-14flaskapi-hhcxf9g7f0h7cee7.westus-01.azurewebsites.net/api/recommend/user/1'
+    )
       .then((res) => res.json())
       .then((data) => {
         const recommendations = (data.recommendations || []).map(
@@ -34,7 +36,9 @@ const RecommendationsPage = () => {
         );
         setRecs(recommendations);
       });
-    fetch('http://localhost:5050/api/recommend/genre')
+    fetch(
+      'https://group3-14flaskapi-hhcxf9g7f0h7cee7.westus-01.azurewebsites.net/api/recommend/genre'
+    )
       .then((res) => res.json())
       .then((data) => {
         setGenreRecs(data);
@@ -57,7 +61,7 @@ const RecommendationsPage = () => {
     return () => observer.disconnect();
   }, [genreRecs, visibleGenres]);
   return (
-    <div className="bg-black text-white min-h-screen px-6 py-10">
+    <div className=" text-white min-h-screen px-6 py-10">
       <h1 className="text-4xl font-bold text-center mb-6">
         Your Recommendations
       </h1>
@@ -79,7 +83,7 @@ const RecommendationsPage = () => {
                 style={{ width: '160px' }}
               >
                 <div
-                  className="bg-black shadow-md rounded overflow-hidden"
+                  className="shadow-md rounded overflow-hidden"
                   style={{ width: '160px', height: '240px' }}
                 >
                   <img

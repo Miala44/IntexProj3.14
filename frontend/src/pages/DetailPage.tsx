@@ -85,7 +85,7 @@ function DetailPage() {
             }
           />
         </div>
-        <div className="col-md-8">
+        <div className="col-md-8" style={{ color: 'white' }}>
           <h2>{movie.title}</h2>
           <p>
             <strong>Director:</strong> {movie.director}
@@ -150,19 +150,7 @@ function DetailPage() {
       </div>
       {/* Floating Similar Movies Carousel */}
       {movie?.title && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            width: '360px',
-            backgroundColor: '#ffffffee',
-            padding: '16px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-            zIndex: 1000,
-          }}
-        >
+        <div className="recommendations-section mt-5">
           <SimilarMoviesCarousel title={movie.title} />
         </div>
       )}
