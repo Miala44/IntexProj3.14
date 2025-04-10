@@ -17,6 +17,7 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting movie update for showId:', formData.showId);
     await updateMovie(String(formData.showId), formData);
     onSuccess();
   };

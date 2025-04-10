@@ -51,7 +51,7 @@ def top_rated():
 
     min_ratings = 3
     filtered = avg_ratings[count_ratings >= min_ratings]
-    top_shows = filtered.sort_values(ascending=False).head(10).index.tolist()
+    top_shows = filtered.sort_values(ascending=False).head(50).index.tolist()
 
     titles = [movie_lookup.get(show_id, f"Unknown ({show_id})") for show_id in top_shows]
     return jsonify({"recommendations": titles})

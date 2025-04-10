@@ -46,7 +46,7 @@ function LoginPage() {
     try {
       const response = await fetch(loginUrl, {
         method: 'POST',
-        credentials: 'include', // ✅ Ensures cookies are sent & received
+        credentials: 'include', //  Ensures cookies are sent & received
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
@@ -136,6 +136,9 @@ function LoginPage() {
                 <button
                   className="btn btn-google btn-login text-uppercase fw-bold"
                   type="button"
+                  onClick={() => {
+                    window.location.href = 'https://localhost:5000/auth/login';
+                  }}
                 >
                   <i className="fa-brands fa-google me-2"></i> Sign in with
                   Google

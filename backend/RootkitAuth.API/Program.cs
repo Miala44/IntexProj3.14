@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RootkitAuth.API.Data;
 using RootkitAuth.API.Data.NewDbModels;
 using RootkitAuth.API.Services;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,18 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.CallbackPath = "/signin-google"; // Must match Google Cloud Console
+    });
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
@@ -36,14 +49,38 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomUserClaimsPrincipalFactory>();
 
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site cookies fix after deployment
+//    options.Cookie.Name = ".AspNetCore.Identity.Application"; // Ensure this matches your frontend cookie name
+//    options.LoginPath = "/login"; // Set your login path
+//    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Always use secure cookies
+
+
+//});
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-site cookies fix after deployment
-    options.Cookie.Name = ".AspNetCore.Identity.Application"; // Ensure this matches your frontend cookie name
-    options.LoginPath = "/login"; // Set your login path
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Always use secure cookies
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.Name = ".AspNetCore.Identity.Application";
+    options.LoginPath = "/login";
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+    // ← Add this block
+    options.Events.OnRedirectToLogin = context =>
+    {
+        if (context.Request.Path.StartsWithSegments("/Movies"))
+        {
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        }
+
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+    };
 });
+
 
 
 
@@ -61,7 +98,7 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-// ✅ FORCE Content-Security-Policy header to allow Flask API
+//  FORCE Content-Security-Policy header to allow Flask API
 app.Use(async (context, next) =>
 {
     context.Response.OnStarting(() =>
