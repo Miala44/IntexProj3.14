@@ -47,15 +47,6 @@ function MoviesPage() {
 
   return (
     <AuthorizeView>
-      <div className="d-flex justify-content-end logout-container mb-2">
-        <Logout>
-          <i className="fas fa-sign-out-alt me-2"></i>
-          Logout{' '}
-          <span className="user-email">
-            <AuthorizedUser value="email" />
-          </span>
-        </Logout>
-      </div>
       <div className="container mt-4 d-flex flex-column min-vh-100">
         <Header />
         <div className="mb-3">
