@@ -117,7 +117,7 @@ namespace RootkitAuth.API.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             Console.WriteLine($":dart: Movies DB Path: {_movieDbContext.Database.GetDbConnection().ConnectionString}");

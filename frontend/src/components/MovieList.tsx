@@ -1,16 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Movie from '../types/Movie';
+import { fetchMovies } from '../api/MoviesAPI'; // use your wrapper here!
 import '../pages/identity.css';
-
-interface MoviesListProps {
-  searchTerm?: string;
-}
-
-interface MoviesListProps {
-  searchTerm?: string;
-  selectedGenres?: string[];
-}
 
 interface MoviesListProps {
   searchTerm?: string;
@@ -25,6 +17,7 @@ function sanitizeFileName(title: string): string {
     .replace(/[^a-zA-Z0-9\s]/g, '')
     .trim();
 }
+
 const MoviesList: React.FC<MoviesListProps> = ({
   searchTerm = '',
   selectedGenres = [],
@@ -38,17 +31,9 @@ const MoviesList: React.FC<MoviesListProps> = ({
   const loader = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    const loadMovies = async () => {
       try {
-        const response = await fetch(
-          `https://localhost:5000/Movies/GetAllMovies?pageSize=${pageSize}&pageNum=${pageNum}`,
-          {
-            credentials: 'include',
-          }
-        );
-
-        if (!response.ok) throw new Error('Failed to fetch movies');
-        const data = await response.json();
+        const data = await fetchMovies(pageSize, pageNum, []);
 
         setMovies((prev) => {
           const newMovies = data.movies.filter(
@@ -58,13 +43,13 @@ const MoviesList: React.FC<MoviesListProps> = ({
           return [...prev, ...newMovies];
         });
 
-        setTotalItems(data.totalMovies);
+        setTotalItems(data.totalNumMovies); // Note the correct key!
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
     };
 
-    fetchMovies();
+    loadMovies();
   }, [pageNum]);
 
   useEffect(() => {
@@ -115,6 +100,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
 
     const rating = (movie.rating ?? '').trim().toUpperCase();
     const ratingMatches = !hideMature || !excludedRatings.includes(rating);
+
     return titleMatches && genreMatches && ratingMatches;
   });
 
