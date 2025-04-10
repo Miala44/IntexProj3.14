@@ -225,7 +225,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
     options.Events.OnRedirectToLogin = context =>
     {
-        if (context.Request.Path.StartsWithSegments("/Movies"))
+        if (context.Request.Path.Value?.ToLower().StartsWith("/movie") == true)
         {
             context.Response.StatusCode = 401;
             return Task.CompletedTask;
