@@ -35,6 +35,27 @@ export const fetchMovies = async (
   }
 };
 
+// export const addMovie = async (newMovie: Movie): Promise<Movie> => {
+//   try {
+//     const response = await fetch(`${API_URL}/Movies/AddMovie`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(newMovie),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to add movie');
+//     }
+
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error adding movie', error);
+//     throw error;
+//   }
+// };
+
 export const addMovie = async (newMovie: Movie): Promise<Movie> => {
   try {
     const response = await fetch(`${API_URL}/Movies/AddMovie`, {
@@ -49,10 +70,11 @@ export const addMovie = async (newMovie: Movie): Promise<Movie> => {
       throw new Error('Failed to add movie');
     }
 
-    return await response.json();
+    const addedMovie = await response.json();
+    return addedMovie;
   } catch (error) {
-    console.error('Error adding movie', error);
-    throw error;
+    console.error("Error during the API request:", error);
+    throw error;  // Re-throw the error if necessary
   }
 };
 

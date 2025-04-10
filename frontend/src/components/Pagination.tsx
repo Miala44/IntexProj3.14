@@ -18,7 +18,7 @@ const Pagination = ({
   const safeTotalPages = Math.max(0, totalPages || 0);
 
   // Optional: Hide pagination if no pages
-  if (safeTotalPages <= 1) return null;
+  // if (safeTotalPages <= 1) return null;
 
   return (
     <div className="flex items-center justify-center flex-col mt-4 space-y-2">

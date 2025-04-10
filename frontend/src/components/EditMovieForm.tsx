@@ -36,11 +36,9 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add New Movie</h2>
-
-      <label>
-        Type:
-        <input
+      <h2 style={{ color: 'white' }}>Edit Movie</h2>
+      <label style={{ color: 'white' }}>
+        Type:     <input
           type="text"
           name="type"
           value={formData.type}
@@ -48,9 +46,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Title:
-        <input
+      <label style={{ color: 'white' }}>
+        Title:     <input
           type="text"
           name="title"
           value={formData.title}
@@ -58,9 +55,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Director:
-        <input
+      <label style={{ color: 'white' }}>
+        Director:     <input     
           type="text"
           name="director"
           value={formData.director}
@@ -68,9 +64,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Cast:
-        <input
+      <label style={{ color: 'white' }}>
+        Cast:     <input
           type="text"
           name="cast"
           value={formData.cast}
@@ -78,19 +73,17 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Country:
-        <input
+      <label style={{ color: 'white' }}>
+        Country:     <input
           type="text"
           name="country"
           value={formData.country}
           onChange={handleChange}
         />
-      </label>
-
-      <label>
-        Release Year:
-        <input
+      </label >
+  
+      <label style={{ color: 'white' }}>
+        Release Year:     <input
           type="number"
           name="releaseYear"
           value={formData.releaseYear}
@@ -98,9 +91,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Rating:
-        <input
+      <label style={{ color: 'white' }}>
+        Rating:     <input
           type="text"
           name="rating"
           value={formData.rating}
@@ -108,9 +100,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Duration:
-        <input
+      <label style={{ color: 'white' }}>
+        Duration:     <input
           type="text"
           name="duration"
           value={formData.duration}
@@ -118,9 +109,8 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Description:
-        <input
+      <label style={{ color: 'white' }}>
+        Description:     <input
           type="text"
           name="description"
           value={formData.description}
@@ -128,17 +118,17 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         />
       </label>
 
-      <label>
-        Genre:
-        <input
+      <label style={{ color: 'white' }}>
+        Genre:     <input
           type="text"
           name="genre"
           value={formData.genre}
           onChange={handleChange}
         />
       </label>
-
+      <br></br>
       <button type="submit">Update Movie</button>
+      <br></br><br></br>
       <button type="button" onClick={onCancel}>
         Cancel
       </button>
