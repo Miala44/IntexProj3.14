@@ -28,4 +28,16 @@
     <Folder Include="Models\NewDbModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+  <Content Include="Identity.sqlite">
+<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Content Include="Movies.db">
+<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
 </Project>
