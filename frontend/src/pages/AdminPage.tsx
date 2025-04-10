@@ -29,7 +29,7 @@ const AdminPage = () => {
     };
 
     loadMovies();
-  }, []);
+  }, [pageSize, pageNum]);
 
   const handleDelete = async (showId: string) => {
     const confirmDelete = window.confirm(
