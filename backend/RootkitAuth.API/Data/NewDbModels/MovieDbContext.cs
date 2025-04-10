@@ -41,7 +41,7 @@ public partial class MovieDbContext : DbContext
         modelBuilder.Entity<MoviesTitle>(entity =>
         {
             entity
-                .HasNoKey()
+                // .HasNoKey()
                 .ToTable("movies_titles");
 
             entity.Property(e => e.AnimeSeriesInternationalTvShows).HasColumnName("Anime Series International TV Shows");

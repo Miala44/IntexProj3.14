@@ -117,7 +117,7 @@ namespace RootkitAuth.API.Controllers
             return Ok(movie);
         }
 
-        [HttpPost("Add")]
+        [HttpPost("AddMovie")]
         public IActionResult AddMovie([FromBody] MoviesTitle newMovie)
         {
             _movieDbContext.MoviesTitles.Add(newMovie);
