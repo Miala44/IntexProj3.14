@@ -1,29 +1,29 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
-const UserContext = createContext<User | null>(null);
-
 interface User {
   email: string;
+  roles: string[];
 }
 
-function AuthorizeView(props: { children: React.ReactNode }) {
-  const [authorized, setAuthorized] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true); // add a loading state
-  //const navigate = useNavigate();
-  let emptyuser: User = { email: '' };
+const UserContext = createContext<User | null>(null);
 
-  const [user, setUser] = useState(emptyuser);
+interface AuthorizeViewProps {
+  children: React.ReactNode;
+  requiredRole?: string; // <- Add this for admin page
+}
+
+function AuthorizeView({ children, requiredRole }: AuthorizeViewProps) {
+  const [authorized, setAuthorized] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User>({ email: '', roles: [] });
 
   useEffect(() => {
     async function fetchWithRetry(url: string, options: any) {
       try {
         const response = await fetch(url, options);
-        //console.log('AuthorizeView: Raw Response:', response);
-
         const contentType = response.headers.get('content-type');
 
-        // Ensure response is JSON before parsing
         if (!contentType || !contentType.includes('application/json')) {
           throw new Error('Invalid response format from server');
         }
@@ -31,8 +31,16 @@ function AuthorizeView(props: { children: React.ReactNode }) {
         const data = await response.json();
 
         if (data.email) {
-          setUser({ email: data.email });
-          setAuthorized(true);
+          setUser({ email: data.email, roles: data.roles || [] });
+
+          const roleMatch =
+            !requiredRole ||
+            data.roles?.some(
+              (role: string) =>
+                role.toLowerCase() === requiredRole.toLowerCase()
+            );
+
+          setAuthorized(roleMatch);
         } else {
           throw new Error('Invalid user session');
         }
@@ -47,25 +55,18 @@ function AuthorizeView(props: { children: React.ReactNode }) {
       method: 'GET',
       credentials: 'include',
     });
-  }, []);
+  }, [requiredRole]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
 
-  if (authorized) {
-    return (
-      <UserContext.Provider value={user}>{props.children}</UserContext.Provider>
-    );
-  }
+  if (!authorized) return <Navigate to="/login" />;
 
-  return <Navigate to="/login" />;
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
 
 export function AuthorizedUser(props: { value: string }) {
   const user = React.useContext(UserContext);
-
-  if (!user) return null; // Prevents errors if context is null
+  if (!user) return null;
 
   return props.value === 'email' ? <>{user.email}</> : null;
 }
