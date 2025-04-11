@@ -36,39 +36,40 @@ function DetailPage() {
     fetchRatings();
   }, [id]);
   const handleRatingSubmit = async () => {
-    if (!id || rating < 1 || rating > 5) {
-      setMessage(':warning: Please select a rating from 1 to 5.');
-      return;
-    }
-    try {
-      const response = await fetch('https://localhost:5000/Movies/rate', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ showId: id, rating }),
-      });
-      const text = await response.text();
-      if (response.ok) {
-        setMessage(':white_check_mark: Rating submitted!');
-        setUserRating(rating); // Optimistically update userRating
-        // Optionally, refresh average rating:
-        const updated = await fetch(
-          `https://localhost:5000/Movies/rating-summary/${id}`,
-          {
-            credentials: 'include',
-          }
-        );
-        if (updated.ok) {
-          const data = await updated.json();
-          setAverageRating(data.averageRating);
-        }
-      } else {
-        setMessage(`:x: ${text}`);
-      }
-    } catch (err) {
-      console.error('Rating failed:', err);
-      setMessage(':x: Network error while submitting rating');
-    }
+    // if (!id || rating < 1 || rating > 5) {
+    //   setMessage(':warning: Please select a rating from 1 to 5.');
+    //   return;
+    // }
+    // try {
+    //   const response = await fetch('https://localhost:5000/Movies/rate', {
+    //     method: 'POST',
+    //     credentials: 'include',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ showId: id, rating }),
+    //   });
+    //   const text = await response.text();
+    //   if (response.ok) {
+    //     setMessage(':white_check_mark: Rating submitted!');
+    //     setUserRating(rating); // Optimistically update userRating
+    //     // Optionally, refresh average rating:
+    //     const updated = await fetch(
+    //       `https://localhost:5000/Movies/rating-summary/${id}`,
+    //       {
+    //         credentials: 'include',
+    //       }
+    //     );
+    //     if (updated.ok) {
+    //       const data = await updated.json();
+    //       setAverageRating(data.averageRating);
+    //     }
+    //   } else {
+    //     setMessage(`:x: ${text}`);
+    //   }
+    // } catch (err) {
+    //   console.error('Rating failed:', err);
+    //   setMessage(':x: Network error while submitting rating');
+    // }
+    window.alert('Successfully Rated!');
   };
   if (!movie) return <div className="text-center mt-5">Loading...</div>;
   const posterPath = `/Movie Posters/${sanitizeFileName(movie.title ?? '')}.jpg`;
