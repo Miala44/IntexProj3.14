@@ -90,7 +90,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // Replace with your frontend URL
+            policy.WithOrigins("http://localhost:3000", "https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net") // Replace with your frontend URL
                 .AllowCredentials() // Required to allow cookies
                 .AllowAnyMethod()
                 .AllowAnyHeader();
@@ -99,13 +99,30 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 //  FORCE Content-Security-Policy header to allow Flask API
+//app.Use(async (context, next) =>
+//{
+//    context.Response.OnStarting(() =>
+//    {
+//        context.Response.Headers.Remove("Content-Security-Policy");
+//        context.Response.Headers.Append("Content-Security-Policy",
+//            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000;");
+//        return Task.CompletedTask;
+//    });
+
+//    await next();
+//});
+
 app.Use(async (context, next) =>
 {
     context.Response.OnStarting(() =>
     {
         context.Response.Headers.Remove("Content-Security-Policy");
         context.Response.Headers.Append("Content-Security-Policy",
-            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000;");
+            "default-src 'self'; " +
+            "connect-src 'self' http://localhost:3000 https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000; " +
+            "style-src 'self' 'unsafe-inline'; " +
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+            "img-src 'self' data:;");
         return Task.CompletedTask;
     });
 

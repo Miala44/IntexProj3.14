@@ -40,8 +40,8 @@ function LoginPage() {
     }
 
     const loginUrl = rememberme
-      ? 'https://localhost:5000/login?useCookies=true'
-      : 'https://localhost:5000/login?useSessionCookies=true';
+      ? 'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/login?useCookies=true'
+      : 'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/login?useSessionCookies=true';
 
     try {
       const response = await fetch(loginUrl, {
@@ -137,7 +137,8 @@ function LoginPage() {
                   className="btn btn-google btn-login text-uppercase fw-bold"
                   type="button"
                   onClick={() => {
-                    window.location.href = 'https://localhost:5000/auth/login';
+                    window.location.href =
+                      'https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net/auth/login';
                   }}
                 >
                   <i className="fa-brands fa-google me-2"></i> Sign in with
