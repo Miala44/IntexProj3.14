@@ -40,4 +40,9 @@
   </Content>
 </ItemGroup>
 
+<ItemGroup>
+  <Content Remove="..\frontend\public\**" />
+</ItemGroup>
+
+
 </Project>
