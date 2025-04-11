@@ -19,7 +19,7 @@ builder.Services.AddDbContext<CompetitionDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("CompetitionConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
 builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("MoviesTitleConnection")));
