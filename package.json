@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "postbuild": "node -e \"require('fs').copyFileSync('public/staticwebapp.config.json', 'dist/staticwebapp.config.json')\"",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "react-multi-carousel": "^2.8.5"
   }

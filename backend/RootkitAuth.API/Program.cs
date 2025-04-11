@@ -90,7 +90,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net") // Replace with your frontend URL
+            policy.WithOrigins("http://localhost:3000", "https://happy-sea-00382de10.6.azurestaticapps.net/", "https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net") // Replace with your frontend URL
                 .AllowCredentials() // Required to allow cookies
                 .AllowAnyMethod()
                 .AllowAnyHeader();
