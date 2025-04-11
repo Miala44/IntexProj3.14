@@ -68,6 +68,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
     // ← Add this block
+    // ← Add this block
     options.Events.OnRedirectToLogin = context =>
     {
         if (context.Request.Path.StartsWithSegments("/Movies"))
