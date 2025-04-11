@@ -1,20 +1,35 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-const Logout = ({ children }: { children?: React.ReactNode }) => {
+
+function Logout(props: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  useEffect(() => {
-    // clear auth state (example)
-    localStorage.removeItem('token'); // or sessionStorage, etc.
-    // redirect after short delay
-    const timeout = setTimeout(() => {
-      navigate('/login');
-    }, 1000);
-    return () => clearTimeout(timeout); // cleanup
-  }, [navigate]);
+
+  const handleLogout = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('https://localhost:5000/logout', {
+        method: 'POST',
+        credentials: 'include', // Ensure cookies are sent
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        navigate('/login');
+      } else {
+        console.error('Logout failed:', response.status);
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
-    <div style={{ marginTop: '2rem', color: 'white' }}>
-      {children ?? <h2>Logging out...</h2>}
-    </div>
+    <a className="logout" href="#" onClick={handleLogout}>
+      {props.children}
+    </a>
   );
-};
+}
+
 export default Logout;

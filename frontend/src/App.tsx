@@ -5,7 +5,6 @@ import {
   Route,
   useLocation,
 } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MoviesPage from './pages/MoviePage';
@@ -18,20 +17,22 @@ import AdminPage from './pages/AdminPage';
 import 'react-multi-carousel/lib/styles.css';
 import Logout from './components/Logout';
 import NavBar from './components/NavBar';
+
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </CartProvider>
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
-// Moved the logic here so it's within <Router> context
+
+// AppContent handles showing/hiding navbar based on route
 function AppContent() {
   const location = useLocation();
-  const hideNavbarOn = ['/', '/login', '/register', '/logout'];
+
+  const hideNavbarOn = ['/', '/login', '/register', '/privacyPage'];
   const shouldHideNavbar = hideNavbarOn.includes(location.pathname);
+
   return (
     <>
       {!shouldHideNavbar && <NavBar />}
@@ -46,9 +47,10 @@ function AppContent() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<LandingPage />} />
-        <Route path="/logout" element={<Logout />} />
+        <Route path="/logout" element={<Logout>Logging out...</Logout>} />
       </Routes>
     </>
   );
 }
+
 export default App;

@@ -12,8 +12,8 @@ const NavBar = () => {
       <NavLink to="/adminmovies" className="nav-link">
         Admin
       </NavLink>
-      <NavLink to="/logout" className="nav-link">
-        Logout
+      <NavLink to="/privacyPage" className="nav-link">
+        Privacy
       </NavLink>
     </nav>
   );
