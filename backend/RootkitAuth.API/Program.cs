@@ -106,7 +106,7 @@ app.Use(async (context, next) =>
     {
         context.Response.Headers.Remove("Content-Security-Policy");
         context.Response.Headers.Append("Content-Security-Policy",
-            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000 https://intexbackend-a6fvcvg6cha4hwcx.eastus-01.azurewebsites.net;");
+            "default-src 'self'; connect-src 'self' http://127.0.0.1:5050 http://localhost:5050 https://localhost:5000;");
         return Task.CompletedTask;
     });
 

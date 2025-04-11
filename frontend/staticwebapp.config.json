@@ -1,9 +1,0 @@
-{
-  "mimeTypes": {
-    ".js": "application/javascript",
-    ".mjs": "application/javascript",
-    ".json": "application/json",
-    ".css": "text/css",
-    ".html": "text/html"
-  }
-}
